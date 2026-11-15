@@ -1,0 +1,8 @@
+# Keep the verified Windows 11 / RTX 5090 CUDA build when installing dependencies.
+# Install these wheels first from https://download.pytorch.org/whl/cu128.
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+torchaudio==2.11.0+cu128
+transformers==4.51.3
+numpy<2
+setuptools<81
