@@ -6,7 +6,7 @@ This setup was tested on **Windows 11, an NVIDIA GeForce RTX 5090, Python 3.10, 
 
 ## Demo reel
 
-**[Watch the 3:19 live console demo (MP4, 37 MB)](demos/venus-demo.mp4)** · [Direct video file](https://raw.githubusercontent.com/jjmlovesgit/realtime-venus/main/demos/venus-demo.mp4)
+**[Play the demo on the project page](https://jjmlovesgit.github.io/realtime-venus/)** · [Direct video file](demos/venus-demo.mp4) (3:19, 37 MB)
 
 The recording shows the console and streamed voice interaction. The video is an intentional demo asset; model weights, session recordings, logs, and other generated output are excluded from Git.
 
