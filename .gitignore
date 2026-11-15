@@ -7,8 +7,12 @@
 /runtime/
 /model_weight/
 /Realtime-Venus-Audio/
+/logs/
+/models/
 /Realtime-Venus-Omni/
 /output/
+/*.wav
+/*.mp3
 /config.yaml
 /.cache/huggingface/
 frontend/**/output/
@@ -24,5 +28,8 @@ dist/
 
 # Private deployments and task outputs
 /config.local*.json
+/live_mic_ui_settings.json
+/live_mic_ui_defaults.json
+/assets/voice_reference.wav
 /harness/config.local*.json
 /workspace/

@@ -34,6 +34,11 @@ The project brings together three components:
 | **Realtime-Venus-Audio · 9B** | A separately trained model for spoken interaction, audio understanding, and native speech generation. |
 | **Realtime-Venus-Harness** | A shared runtime that captures delegated requests, executes background work, and returns results to the originating conversation. |
 
+This fork also includes a [Windows live microphone console](LIVE_MIC_WINDOWS.md)
+for the Audio checkpoint, with local speaker playback, interruption, VAD,
+echo cancellation, and editable controls. Model weights, logs, generated audio,
+and local settings are kept outside Git.
+
 ### What Realtime-Venus enables
 
 - **Continuous audiovisual interaction.** Omni observes streaming camera and microphone input and can initiate a response when the evolving scene calls for it.

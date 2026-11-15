@@ -16,6 +16,7 @@ DEFAULT_SYSTEM_PROMPT = "Streaming Omni Conversation."
 INPUT_SAMPLE_RATE = 16000
 INPUT_TAIL_SECONDS = 10
 TTS_SAMPLE_RATE = 24000
+OUTPUT_TAIL_SECONDS = 0.75
 
 
 def load_model(model_dir: Path):
@@ -36,11 +37,30 @@ def load_model(model_dir: Path):
     return model
 
 
+def use_soundfile_for_reference_wav() -> None:
+    """Avoid TorchCodec's FFmpeg DLL dependency for the bundled WAV prompt."""
+    import torchaudio
+
+    original_load = torchaudio.load
+
+    def load_audio(filepath, *args, **kwargs):
+        if str(filepath).lower().endswith(".wav") and not args and set(kwargs) <= {"backend"}:
+            samples, sample_rate = sf.read(filepath, dtype="float32", always_2d=True)
+            return torch.from_numpy(samples.T.copy()), sample_rate
+        return original_load(filepath, *args, **kwargs)
+
+    torchaudio.load = load_audio
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-path", required=True, help="Local model directory")
     parser.add_argument("--audio", required=True, help="Input audio or video file")
     parser.add_argument("--output", required=True, help="Generated speech WAV path")
+    parser.add_argument(
+        "--voice-reference",
+        help="Optional WAV file for the generated voice (default: checkpoint's HT_ref_audio.wav)",
+    )
     parser.add_argument(
         "--prompt", default="", help="Optional text injected with the final chunk"
     )
@@ -72,6 +92,7 @@ def save_audio(timed_audio, output_path: Path) -> None:
     ]
     channels = max((samples.shape[1] for _, samples in chunks), default=1)
     end_sample = max((start + len(samples) for start, samples in chunks), default=1)
+    end_sample += round(OUTPUT_TAIL_SECONDS * TTS_SAMPLE_RATE)
     output = np.zeros((end_sample, channels), dtype=np.float32)
 
     for start, samples in chunks:
@@ -141,7 +162,22 @@ def main() -> None:
     audio = np.pad(audio.astype(np.float32), (0, INPUT_TAIL_SECONDS * INPUT_SAMPLE_RATE))
 
     duplex = load_model(model_dir).as_duplex(generate_audio=True)
-    duplex.prepare(prefix_system_prompt=args.system_prompt)
+    use_soundfile_for_reference_wav()
+    project_reference = Path(__file__).resolve().parents[2] / "assets" / "voice_reference.wav"
+    default_reference = project_reference if project_reference.is_file() else model_dir / "assets" / "HT_ref_audio.wav"
+    reference_audio = (
+        Path(args.voice_reference).expanduser().resolve()
+        if args.voice_reference
+        else default_reference
+    )
+    if not reference_audio.is_file():
+        raise FileNotFoundError(f"TTS reference audio not found: {reference_audio}")
+    if reference_audio.suffix.lower() != ".wav":
+        raise ValueError("--voice-reference must point to a WAV file")
+    duplex.prepare(
+        prefix_system_prompt=args.system_prompt,
+        prompt_wav_path=str(reference_audio),
+    )
     print(
         f"Streaming {len(audio) / duplex.SAMPLE_RATE:.2f}s from {audio_path} "
         f"(appended {INPUT_TAIL_SECONDS}s silence)",
