@@ -48,12 +48,16 @@ The focused avatar launcher is in `G:\FlashIMTalker\python_venus_avatar_server.p
 | 1.5 s | 0.97 s | Valid 1.5 s MP4, visually inspected |
 | 3.0 s | 1.72 s | Valid 3.0 s MP4 |
 
-These measurements used the **full** avatar server in `G:\FlashIMTalker`, with Venus **not loaded concurrently**. Both test jobs and their MP4s were deleted. The focused startup has passed import and mocked lifecycle tests but has not yet been measured with the real model. These figures do not determine the final lip-sync buffer: collecting a speech chunk and sharing the 5090 with Venus may add latency.
+The two measurements above used the **full** avatar server in `G:\FlashIMTalker`, with Venus **not loaded concurrently**. Both test jobs and their MP4s were deleted.
+
+On 2026-11-15 we then launched the **focused** `python_venus_avatar_server.py` and started a live Venus session together. Venus reached `Listening` with Silero VAD and AEC enabled. It reported **22.8 GiB allocated** to its model; total 5090 memory reported by `nvidia-smi` was **28.9 GiB used of 32.6 GiB** during startup and about **27.3 GiB** after the renders. While both models were resident, the focused avatar endpoint rendered a **1.5 s** saved Venus segment in **1.07 s** and a **3.0 s** segment in **2.01 s**. Both MP4s had the expected duration and were deleted through the endpoint. No out-of-memory error occurred; both Python processes remained running.
+
+This confirms **co-residency and isolated short renders**, not synchronized live playback. The final lip-sync buffer still depends on how we package and dispatch Venus's actual streaming speech chunks, and on whether avatar work delays live audio during a conversation. Do not hard-code a buffer from these two manual uploads.
 
 ## Next integration steps
 
-1. Start the focused avatar server and Venus together. Check that `GET http://127.0.0.1:8002/openapi.json` lists `/avatar/audio`, then render saved 1–3 s Venus speech chunks while both models are resident. Record GPU memory, `generation_seconds`, and any slowdown of Venus audio.
-2. If the shared-GPU test fits and stays responsive, copy **clean model speech only** from Venus's `queue_speaker_audio` path to a nonblocking avatar upload queue. Exclude the radio static, cue sounds, and tail silence. Keep microphone capture and speaker playback inside Venus.
-3. Add a video-capable display to the Venus UI. Play avatar MP4s muted, discard old queued video on interruption, and measure the gap from speech generation to visible lip motion. Decide the playback buffer from those measurements; do not assume a fixed value from the isolated tests.
+1. Copy **clean model speech only** from Venus's `queue_speaker_audio` path to a nonblocking avatar upload queue. Exclude the radio static, cue sounds, and tail silence. Keep microphone capture and speaker playback inside Venus.
+2. Add a video-capable display to the Venus UI. Play avatar MP4s muted and discard old queued video on interruption. Measure the gap from speech generation to visible lip motion, plus any slowdown in Venus audio when both processes generate at once.
+3. Choose the playback buffer from those live measurements. The endpoint's 1.07 s render for a 1.5 s chunk is an encouraging starting point, not a full end-to-end latency figure.
 
 The bridge is **not yet wired into `live_mic_duplex.py` or `live_mic_ui.py`**. The avatar endpoint can currently be tested manually with saved reply WAV files. No user voice reference, model weights, logs, or generated media should be committed to the Venus repository.
