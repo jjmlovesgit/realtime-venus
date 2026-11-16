@@ -74,6 +74,8 @@ Choose the microphone and speaker in **Controls → Audio routing**, then click 
 
 For a terminal-only run, use `python live_mic_duplex.py`. See the [full Windows live microphone guide](LIVE_MIC_WINDOWS.md) for every switch, playback tuning, and troubleshooting. The [test plan](TEST_PLAN.md) covers functional checks.
 
+For the separate RTX 5090 talking-avatar experiment, see the [avatar integration handoff](AVATAR_INTEGRATION.md). It records the `G:` avatar folder, both Conda environments, startup commands, measured endpoint latency, and the remaining UI work.
+
 ## Project files
 
 | Path | Purpose |
