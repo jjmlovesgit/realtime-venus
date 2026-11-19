@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07111a">
-  <meta name="description" content="Watch the Realtime Venus Audio live voice console running locally on Windows 11 and an RTX 5090.">
-  <title>Realtime Venus Audio · Live demo</title>
+  <meta name="description" content="Watch Realtime Venus Audio and Omni demos running locally on Windows 11 and an RTX 5090.">
+  <title>Realtime Venus · Demo reel</title>
   <style>
     :root { color-scheme: dark; font-family: "Segoe UI", Arial, sans-serif; }
     * { box-sizing: border-box; }
@@ -15,6 +15,9 @@
     .eyebrow { margin: 0 0 15px; color: #70e6d3; font: 600 12px/1.5 Consolas, monospace; letter-spacing: .23em; text-transform: uppercase; }
     h1 { max-width: 860px; margin: 0; font-size: clamp(35px, 5vw, 70px); line-height: 1.04; letter-spacing: -.045em; }
     .lead { max-width: 710px; margin: 22px 0 30px; color: #a9c3cb; font-size: clamp(16px, 2vw, 19px); line-height: 1.6; }
+    .demo { margin-top: 42px; }
+    .demo h2 { margin: 0 0 9px; font-size: clamp(23px, 3vw, 34px); letter-spacing: -.025em; }
+    .demo p { margin: 0 0 18px; color: #a9c3cb; line-height: 1.55; }
     .screen { position: relative; overflow: hidden; padding: clamp(7px, 1vw, 12px); border: 1px solid #336171; border-radius: 22px; background: linear-gradient(145deg, #142b39, #09151e 52%, #122b35); box-shadow: 0 28px 80px #0009, inset 0 1px 0 #7fe6da48; }
     .screen::before, .screen::after { position: absolute; z-index: 1; color: #6aded2; font: 12px Consolas, monospace; }
     .screen::before { content: "◢"; top: 3px; left: 6px; }
@@ -32,22 +35,37 @@
 </head>
 <body>
   <main>
-    <p class="eyebrow">Realtime Venus / Audio lab / CH 01</p>
-    <h1>A voice you can interrupt.</h1>
-    <p class="lead">Watch the Windows live voice console stream speech from Realtime-Venus-Audio on an RTX 5090. The microphone stays live while the model speaks.</p>
-    <div class="screen">
-      <video controls preload="metadata" playsinline poster="assets/venus-demo-poster.jpg" aria-label="Realtime Venus Audio live console demo">
-        <source src="demos/venus-demo.mp4" type="video/mp4">
-        Your browser cannot play the embedded video. <a href="demos/venus-demo.mp4">Open the MP4</a> instead.
-      </video>
-    </div>
-    <div class="under"><span>03:19 · H.264 / AAC · 1920 × 1080</span><a href="demos/venus-demo.mp4">Open or download video ↗</a></div>
+    <p class="eyebrow">Realtime Venus / Demo reel</p>
+    <h1>Two ways to talk with Venus.</h1>
+    <p class="lead">Watch the Audio and Omni consoles run locally on Windows 11 with an RTX 5090.</p>
+    <section class="demo" aria-labelledby="audio-demo-title">
+      <h2 id="audio-demo-title">Audio · A voice you can interrupt</h2>
+      <p>The live voice console streams speech while the microphone remains available for interruption.</p>
+      <div class="screen">
+        <video controls preload="metadata" playsinline poster="assets/venus-demo-poster.jpg" aria-label="Realtime Venus Audio live console demo">
+          <source src="demos/venus-demo.mp4" type="video/mp4">
+          Your browser cannot play the embedded video. <a href="demos/venus-demo.mp4">Open the MP4</a> instead.
+        </video>
+      </div>
+      <div class="under"><span>03:19 · H.264 / AAC · 1920 × 1080</span><a href="demos/venus-demo.mp4">Open or download Audio demo ↗</a></div>
+    </section>
+    <section class="demo" aria-labelledby="omni-demo-title">
+      <h2 id="omni-demo-title">Omni · Watch together</h2>
+      <p>Venus watches and listens to video, then responds through its own voice.</p>
+      <div class="screen">
+        <video controls preload="metadata" playsinline aria-label="Realtime Venus Omni video conversation demo">
+          <source src="demos/venus-omni-demo.mp4" type="video/mp4">
+          Your browser cannot play the embedded video. <a href="demos/venus-omni-demo.mp4">Open the MP4</a> instead.
+        </video>
+      </div>
+      <div class="under"><span>00:56 · H.264 / AAC · 1920 × 1080</span><a href="demos/venus-omni-demo.mp4">Open or download Omni demo ↗</a></div>
+    </section>
     <nav class="links" aria-label="Project links">
       <a href="https://github.com/jjmlovesgit/realtime-venus#readme">Windows 11 setup</a>
       <a href="https://github.com/jjmlovesgit/realtime-venus/blob/main/LIVE_MIC_WINDOWS.md">Live mic guide</a>
       <a href="https://github.com/inclusionAI/Realtime-Venus">Upstream model</a>
     </nav>
-    <footer>Realtime Venus Audio · Local voice experiment · Windows 11 + RTX 5090</footer>
+    <footer>Realtime Venus · Local voice and video experiments · Windows 11 + RTX 5090</footer>
   </main>
 </body>
 </html>

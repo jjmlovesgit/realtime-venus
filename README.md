@@ -6,9 +6,12 @@ This setup was tested on **Windows 11, an NVIDIA GeForce RTX 5090, Python 3.10, 
 
 ## Demo reel
 
-**[Play the demo on the project page](https://jjmlovesgit.github.io/realtime-venus/)** · [Direct video file](demos/venus-demo.mp4) (3:19, 37 MB)
+**[Play both demos on the project page](https://jjmlovesgit.github.io/realtime-venus/)**
 
-The recording shows the console and streamed voice interaction. The video is an intentional demo asset; model weights, session recordings, logs, and other generated output are excluded from Git.
+- **Audio:** [Direct video file](demos/venus-demo.mp4) (3:19, 37 MB). Live microphone conversation with interruption.
+- **Omni:** [Direct video file](demos/venus-omni-demo.mp4) (0:56, 4.5 MB). Co-watching a video and responding through speech.
+
+These recordings are intentional demo assets; model weights, session recordings, logs, and other generated output are excluded from Git.
 
 ## What the console adds
 
